@@ -37,7 +37,7 @@ function drawParts(ctx) {
             else
                 ctx.fillStyle="rgb(241, 196, 15)";*/ //yellowy
             //ctx.fillStyle = "rgb(39, 174, 96)"; //greeny
-            ctx.translate(parts[i].x*scale, gameHeight - parts[i].y);
+            ctx.translate(parts[i].x, gameHeight - parts[i].y);
             ctx.rotate(parts[i].rotation*(Math.PI/180));
             ctx.fillRect((-parts[i].width/2) ,(-parts[i].height/2),parts[i].width,parts[i].height);
 
@@ -46,7 +46,7 @@ function drawParts(ctx) {
             ctx.stroke();
 
             ctx.rotate(-parts[i].rotation*(Math.PI/180));
-            ctx.translate(-parts[i].x*scale, -gameHeight + parts[i].y);
+            ctx.translate(-parts[i].x, -gameHeight + parts[i].y);
             ctx.globalAlpha = 1;
         }
     }

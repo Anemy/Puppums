@@ -45,11 +45,13 @@ table {
 
 /* MY THINGS */
 
-#backgroundCanvas{
-    position:fixed;
+#game_canvas{
+    /*position:fixed;
     top: 0;
-    left: 0;
+    left: 0;*/
     z-index:-1;
+
+    border: 1px solid black;
 }
 
 body {
