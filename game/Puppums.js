@@ -3,8 +3,8 @@
 const LEFT = 0;
 const RIGHT = 1;
 
-const jumpSpeed = 300;
-const playerSpeed = 80;
+const jumpSpeed = -500;
+const playerSpeed = 200;
 const playerFallSpeed = 800;
 
 // Puppum's images
@@ -89,13 +89,13 @@ function updatePuppumsPos(delta) {
     if (puppums.y + (puppums.yDir * delta) < height - puppums.height) {
         if(puppums.space) {
             puppums.jump = true;
-            puppums.y = height - puppums.width;
+            // puppums.y = height - puppums.height;
             puppums.yDir = jumpSpeed;
         }
         else {
             // stop player from falling
             puppums.yDir = 0;
-            puppums.y = height - puppums.width;
+            puppums.y = height - puppums.height;
             puppums.jump = false;
         }
     }
@@ -135,5 +135,5 @@ function drawPuppums(puppums) {
     // if(yScale < scale)
     //     ctx.drawImage(dogImage, puppums.xPos * scale, gameHeight * (puppums.yPos/originalHeight) - ((puppums.width*scale) - puppums.width) , puppums.width * scale, puppums.width * scale);
     // else
-       ctx.drawImage(dogImage, puppums.x, gameHeight - puppums.y, puppums.width, puppums.width);
+       ctx.drawImage(dogImage, puppums.x, puppums.y, puppums.width, puppums.height);
 }
