@@ -74,34 +74,34 @@ function updatePuppumsPos(delta) {
     }
 
     // edge of map x
-    if (puppums.xPos + (puppums.xDir * delta) >= width - puppums.width) {
-        puppums.xPos = width - puppums.width - 1;
+    if (puppums.x + (puppums.xDir * delta) >= width - puppums.width) {
+        puppums.x = width - puppums.width - 1;
         if (puppums.xDir > 0.01)
             puppums.xDir = 0;
     }
-    if (puppums.xPos + (puppums.xDir * delta) <= 0) {
-        puppums.xPos = 1;
+    if (puppums.x + (puppums.xDir * delta) <= 0) {
+        puppums.x = 1;
         if (puppums.xDir < -0.01)
             puppums.xDir = 0;
     }
 
     // bottom y collision
-    if (puppums.yPos + (puppums.yDir * delta) < height - puppums.height) {
+    if (puppums.y + (puppums.yDir * delta) < height - puppums.height) {
         if(puppums.space) {
             puppums.jump = true;
-            puppums.yPos = height - puppums.width;
+            puppums.y = height - puppums.width;
             puppums.yDir = jumpSpeed;
         }
         else {
             // stop player from falling
             puppums.yDir = 0;
-            puppums.yPos = height - puppums.width;
+            puppums.y = height - puppums.width;
             puppums.jump = false;
         }
     }
 
-    puppums.xPos = puppums.xPos + (puppums.xDir * delta);
-    puppums.yPos = puppums.yPos + (puppums.yDir * delta);
+    puppums.x = puppums.x + (puppums.xDir * delta);
+    puppums.y = puppums.y + (puppums.yDir * delta);
 }
 
 // Move into Puppums?
@@ -135,5 +135,5 @@ function drawPuppums(puppums) {
     // if(yScale < scale)
     //     ctx.drawImage(dogImage, puppums.xPos * scale, gameHeight * (puppums.yPos/originalHeight) - ((puppums.width*scale) - puppums.width) , puppums.width * scale, puppums.width * scale);
     // else
-       ctx.drawImage(dogImage, puppums.xPos, gameHeight - puppums.yPos, puppums.width, puppums.width);
+       ctx.drawImage(dogImage, puppums.x, gameHeight - puppums.y, puppums.width, puppums.width);
 }
