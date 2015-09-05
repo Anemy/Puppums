@@ -96,7 +96,7 @@ function updatePuppumsPos(delta) {
     // update run image counter
     puppums.runCount += delta * 10;
 
-    if(puppums.left || puppums.right) {
+    if((puppums.left || puppums.right) && puppums.floor) {
         soundCounter += delta * 10;
         if (soundCounter >= 1.5) {
             // Play the footstep sound lol
@@ -121,7 +121,7 @@ function updatePuppumsPos(delta) {
         // Play the footstep sound lol
         if(puppums.left || puppums.right) {
 
-            footStepSounds[footStepSoundCounter].play();
+            // footStepSounds[footStepSoundCounter].play();
 
             footStepSoundCounter++;
             if(footStepSoundCounter >= footStepSounds.length) {
