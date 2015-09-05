@@ -19,6 +19,11 @@ var LEFT = 0;
 //Your character!
 var puppums = new Puppums();
 
+// the attributes of each level
+var platforms = [];
+var walls = [];
+// collisions are performed in Collisions.js
+
 //half the time returns the val as negative
 function getNegative (toNegate) {
     if(Math.random() * 100 > 50)
@@ -121,7 +126,9 @@ function update(delta) {
 }
 
 function checkCollisions() {
-    
+    // VV both in Collisions.js
+    // checkCollisionObjectPlatform
+    // checkCollisionObjectWall
 }
 
 //kill the dog and call the game reset

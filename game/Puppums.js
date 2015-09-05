@@ -30,15 +30,18 @@ var dogLm = [];
 var dogR;
 var dogL;
 
+var soundCounter = 0;
+
+var footStepFile = 'game/sounds/footstep.mp3';
 var footStepSounds = [];
-footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
-footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
-footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
-footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
-footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
-footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
-footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
-footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
+footStepSounds.push(new Audio(footStepFile));
+footStepSounds.push(new Audio(footStepFile));
+footStepSounds.push(new Audio(footStepFile));
+footStepSounds.push(new Audio(footStepFile));
+footStepSounds.push(new Audio(footStepFile));
+footStepSounds.push(new Audio(footStepFile));
+footStepSounds.push(new Audio(footStepFile));
+footStepSounds.push(new Audio(footStepFile));
 footStepSoundCounter = 0;
 
 // Loading images
@@ -88,8 +91,6 @@ var Puppums = function () {
     }
 };
 
-var soundCounter = 0;
-
 // Move into Puppums?
 function updatePuppumsPos(delta) {
 
@@ -99,9 +100,8 @@ function updatePuppumsPos(delta) {
     if((puppums.left || puppums.right) && puppums.floor) {
         soundCounter += delta * 10;
         if (soundCounter >= 1.5) {
-            // Play the footstep sound lol
-            
-
+                // Play the footstep sound lol
+        
                 footStepSounds[footStepSoundCounter].play();
 
                 footStepSoundCounter++;
