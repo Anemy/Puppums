@@ -117,17 +117,6 @@ function updatePuppumsPos(delta) {
 
 
     if (puppums.runCount >= 2) {
-
-        // Play the footstep sound lol
-        if(puppums.left || puppums.right) {
-
-            // footStepSounds[footStepSoundCounter].play();
-
-            footStepSoundCounter++;
-            if(footStepSoundCounter >= footStepSounds.length) {
-                footStepSoundCounter = 0;
-            }
-        }
         puppums.runCount = 0;
     }
 
