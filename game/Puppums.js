@@ -5,9 +5,11 @@ const LEFT = -1; // should not do 0 because js sometimes typecasts null to 0
 const RIGHT = 1;
 
 //player constants (temporary values for now)
-const playerRunSpeed = 400;
+const playerRunSpeed = 440;
+const playerRunSpeedBuild = 1400;// Build up run speed
 const playerAccSpeed = 100;
 const playerRunSlowSpeed = 150;
+const playerRunDecelSpeed = 1600;
 const playerJumpSpeed = 700;
 const playerFallSpeed = 1800;
 const playerMaxHP = 1000;
@@ -27,6 +29,17 @@ var dogRm = [];
 var dogLm = [];
 var dogR;
 var dogL;
+
+var footStepSounds = [];
+footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
+footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
+footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
+footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
+footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
+footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
+footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
+footStepSounds.push(new Audio('game/sounds/footstep.mp3'));
+footStepSoundCounter = 0;
 
 // Loading images
 dogRm[0] = new Image();
@@ -75,23 +88,77 @@ var Puppums = function () {
     }
 };
 
+var soundCounter = 0;
+
 // Move into Puppums?
 function updatePuppumsPos(delta) {
 
     // update run image counter
     puppums.runCount += delta * 10;
+
+    if(puppums.left || puppums.right) {
+        soundCounter += delta * 10;
+        if (soundCounter >= 1.5) {
+            // Play the footstep sound lol
+            
+
+                footStepSounds[footStepSoundCounter].play();
+
+                footStepSoundCounter++;
+                if(footStepSoundCounter >= footStepSounds.length) {
+                    footStepSoundCounter = 0;
+                }
+            soundCounter = 0;
+        }
+    }
+    else {
+        soundCounter = 1.5;
+    }
+
+
     if (puppums.runCount >= 2) {
+
+        // Play the footstep sound lol
+        if(puppums.left || puppums.right) {
+
+            footStepSounds[footStepSoundCounter].play();
+
+            footStepSoundCounter++;
+            if(footStepSoundCounter >= footStepSounds.length) {
+                footStepSoundCounter = 0;
+            }
+        }
         puppums.runCount = 0;
     }
 
     if (puppums.left == true) {
-        puppums.xDir = -playerRunSpeed;
+        // puppums.xDir = -playerRunSpeed;
+        puppums.xDir -= playerRunSpeedBuild*delta;
+        if(puppums.xDir < -playerRunSpeed) {
+            puppums.xDir = -playerRunSpeed;
+        }
     }
     else if (puppums.right == true) {
-        puppums.xDir = playerRunSpeed;
+        puppums.xDir += playerRunSpeedBuild*delta;
+        if(puppums.xDir > playerRunSpeed) {
+            puppums.xDir = playerRunSpeed;
+        }
     }
     else {
-        puppums.xDir = 0;
+        // puppums.xDir = 0;
+        // Decel puppums when not moving to 0
+        if(puppums.xDir > 0) {
+            puppums.xDir -= playerRunDecelSpeed * delta;
+            if(puppums.xDir < 0) {
+                puppums.xDir = 0;
+            }
+        }
+        else if(puppums.xDir < 0) {
+            puppums.xDir += playerRunDecelSpeed * delta;
+            if(puppums.xDir > 0) {
+                puppums.xDir = 0;
+            }
+        }
     }
 
     // update player x, y positions
