@@ -176,12 +176,7 @@ function keyPressed(e) {
         puppums.facing = RIGHT;
         puppums.left = false;
     }
-    if (key == 38 || key == 32) {
-        if (puppums.jump == false) {
-            comboEnded = false;
-            puppums.jump = true;
-            puppums.yDir = jumpSpeed;
-        }
+    if (key == 38 || key == 32) { // up or space
         puppums.space = true;
     }
 }
@@ -199,7 +194,7 @@ function keyReleased(e) {
         puppums.right = false;
     }
 
-    if(upKey == 32 || upKey == 38) {
+    if(upKey == 32 || upKey == 38) { // up or space
         puppums.space = false;
         //space
     }

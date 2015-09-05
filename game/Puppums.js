@@ -1,11 +1,26 @@
 /* This contains the Puppums class */
 
-const LEFT = 0;
+//direction facing constants
+const LEFT = -1; // should not do 0 because js sometimes typecasts null to 0
 const RIGHT = 1;
 
-const jumpSpeed = -500;
-const playerSpeed = 200;
-const playerFallSpeed = 800;
+//player constants (temporary values for now)
+const playerRunSpeed = 320;
+const playerAccSpeed = 100;
+const playerRunSlowSpeed = 150;
+const playerJumpSpeed = 600;
+const playerFallSpeed = 1600;
+const playerMaxHP = 1000;
+const playerRespawnTime = 3;
+const maxFallRate = 1000;
+
+//the sizes of the game frame
+const frameWidth = 800;
+const frameHeight = 600;
+
+const insane = false;
+const insaneSpeed = 75;
+const insaneJumpSpeed = 125;
 
 // Puppum's images
 var dogRm = [];
@@ -35,13 +50,19 @@ var Puppums = function () {
     this.xDir = 0;
     this.yDir = 0;
 
-    this.facing = RIGHT; //1 right 0 left
+    this.xDirExternal = 0;
+    this.yDirExternal = 0;
+    this.onVertPlatformUp = false;
+    this.onVertPlatformDown = false;
+
+    this.facing = RIGHT; //1 right -1 left
     this.left = false;
     this.right = false;
 
     this.runCount = 0;
 
     this.jump = false;
+    this.floor = false;
     this.space = false;
 
     // square dimensions
@@ -56,21 +77,38 @@ var Puppums = function () {
 
 // Move into Puppums?
 function updatePuppumsPos(delta) {
-    puppums.yDir = puppums.yDir - playerFallSpeed * delta;
 
-    puppums.runCount += delta;
-    if (puppums.runCount >= 14) {
+    // update run image counter
+    puppums.runCount += delta * 10;
+    if (puppums.runCount >= 2) {
         puppums.runCount = 0;
     }
 
     if (puppums.left == true) {
-        puppums.xDir = -playerSpeed;
+        puppums.xDir = -playerRunSpeed;
     }
     else if (puppums.right == true) {
-        puppums.xDir = playerSpeed;
+        puppums.xDir = playerRunSpeed;
     }
     else {
         puppums.xDir = 0;
+    }
+
+    // update player x, y positions
+    if(!puppums.onVertPlatformUp && !puppums.onVertPlatformDown){
+        puppums.y += puppums.yDir * delta + puppums.yDirExternal * delta;
+    }
+    puppums.x += puppums.xDir * delta + puppums.xDirExternal * delta;
+
+    // check if player is in air
+    if (puppums.yDir != 0) {
+        puppums.floor = false;
+    }
+
+    // update falling spped
+    if (puppums.yDir < maxFallRate && !puppums.floor && !puppums.onVertPlatformUp && !puppums.onVertPlatformDown)
+    {
+        puppums.yDir += playerFallSpeed * delta;
     }
 
     // edge of map x
@@ -81,45 +119,49 @@ function updatePuppumsPos(delta) {
     }
     if (puppums.x + (puppums.xDir * delta) <= 0) {
         puppums.x = 1;
-        if (puppums.xDir < -0.01)
+        if (puppums.xDir < -0.01) {
             puppums.xDir = 0;
+        }
     }
 
     // bottom y collision
-    if (puppums.y + (puppums.yDir * delta) < height - puppums.height) {
-        if(puppums.space) {
-            puppums.jump = true;
-            // puppums.y = height - puppums.height;
-            puppums.yDir = jumpSpeed;
-        }
-        else {
-            // stop player from falling
-            puppums.yDir = 0;
-            puppums.y = height - puppums.height;
-            puppums.jump = false;
-        }
+    if (puppums.y + (puppums.yDir * delta) > height - puppums.height && puppums.yDir > 0) {
+        // stop player from falling
+        puppums.yDir = 0;
+        puppums.y = height - puppums.height;
+        puppums.jump = false;
+        puppums.floor = true;
     }
 
-    puppums.x = puppums.x + (puppums.xDir * delta);
-    puppums.y = puppums.y + (puppums.yDir * delta);
+    // JUMP!
+    if(puppums.floor && puppums.space) {
+        // console.log('JMUPJUMPJUMP');
+        puppums.jump = true;
+        puppums.yDir = -playerJumpSpeed;
+        puppums.floor = false;
+    }
+
+
+    // console.log('Puppums pos: ' + puppums.x + "  " + puppums.y);
+    // console.log('Puppums dir: ' + puppums.xDir + "  " + puppums.yDir);
 }
 
 // Move into Puppums?
 function drawPuppums(puppums) {
     var dogImage;
     if (puppums.left && puppums.yDir == 0) {
-        if (puppums.runCount <= 7) {
+        if (puppums.runCount <= 1) {
             dogImage = dogLm[0];
         }
-        if (puppums.runCount > 7) {
+        if (puppums.runCount > 1) {
             dogImage = dogLm[1];
         }
     }
     else if (puppums.right && puppums.yDir == 0) {
-        if (puppums.runCount <= 7) {
+        if (puppums.runCount <= 1) {
             dogImage = dogRm[0];
         }
-        if (puppums.runCount > 7) {
+        if (puppums.runCount > 1) {
             dogImage = dogRm[1];
         }
     }
@@ -130,8 +172,7 @@ function drawPuppums(puppums) {
             dogImage = dogR;
 
     }
-    //console.log("Yo the dog: " + puppums.width +" scaled to: "+ puppums.width*scale + " Attempted subtract: " + ((puppums.width*scale) - puppums.width));
-    //console.log("PLZ " + (gameHeight - puppums.yPos - ((puppums.width*scale) - puppums.width)));
+
     // if(yScale < scale)
     //     ctx.drawImage(dogImage, puppums.xPos * scale, gameHeight * (puppums.yPos/originalHeight) - ((puppums.width*scale) - puppums.width) , puppums.width * scale, puppums.width * scale);
     // else
