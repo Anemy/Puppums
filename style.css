@@ -68,45 +68,40 @@ body {
 }
 
 #name {
-    font-family: 'Oswald', sans-serif;
-    font-size: 3.5em;
-    color: #000020;
+    /*font-family: 'Oswald', sans-serif;*/
+
+    /*font-family: 'Oswald', sans-serif;
+    font-weight: 700;*/
+    font-family: 'Sigmar One', cursive;
+
+    font-size: 2.5em;
+    color: #1abc9c;
     margin-top: 1%;
 }
 
-#belowNameLine {
-    width: 30%;
-    height: 0.1px;
-    color: #000020;
-    background-color: #000020;
-    border-color: #000020;
-}
 
 #belowAboutLine {
     width: 24%;
     height: 0.01px;
-    color: #000020;
-    background-color: #000020;
-    border-color: #000020;
+    border-color: #1abc9c;
 }
 
-#about {
-    font-family: Calibri, sans-serif;
-    /*font-family: 'Raleway', sans-serif;*/
-    font-size: 1.8em;
-    color: #000020;
-    margin-top: 0%;
-    font-weight: 400;
+#birthdayTemp {
+    font-family: 'Questrial', sans-serif;
+
+    font-size: 1.5em;
+    color: black;
+    margin-top: 1%;
 }
 
-#options {
+
+/*#options {
     font-family: Calibri, sans-serif;
-    /*font-family: 'Raleway', sans-serif;*/
     font-size: 1.0em;
     color: #000020;
     margin-top: 1%;
     font-weight: 400;
-}
+}*/
 
 span:hover {
 	cursor: pointer;

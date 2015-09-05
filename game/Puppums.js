@@ -5,14 +5,14 @@ const LEFT = -1; // should not do 0 because js sometimes typecasts null to 0
 const RIGHT = 1;
 
 //player constants (temporary values for now)
-const playerRunSpeed = 320;
+const playerRunSpeed = 400;
 const playerAccSpeed = 100;
 const playerRunSlowSpeed = 150;
-const playerJumpSpeed = 600;
-const playerFallSpeed = 1600;
+const playerJumpSpeed = 700;
+const playerFallSpeed = 1800;
 const playerMaxHP = 1000;
 const playerRespawnTime = 3;
-const maxFallRate = 1000;
+const maxFallRate = 2000;
 
 //the sizes of the game frame
 const frameWidth = 800;
@@ -66,8 +66,8 @@ var Puppums = function () {
     this.space = false;
 
     // square dimensions
-    this.width = 30;
-    this.height = 30;
+    this.width = 26;
+    this.height = 26;
 
     // not sure if I want to do it this way or not lol
     this.draw = function() {
