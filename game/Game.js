@@ -8,6 +8,8 @@ var ctx;
 // Game is based on these. ()
 var width = 800;
 var height = 600;
+var canvasWidth = 800;
+var canvasHeight = 600;
 
 // The fps is actually 1000/ VVVV
 var fps = 15;
@@ -20,8 +22,10 @@ var LEFT = 0;
 var puppums = new Puppums();
 
 // the attributes of each level
+var mapData;
 var platforms = [];
 var walls = [];
+var lava = [];
 // collisions are performed in Collisions.js
 
 //half the time returns the val as negative
@@ -37,11 +41,8 @@ function init() {
     canvas = document.getElementById('game_canvas');
     ctx = canvas.getContext('2d');
 
-    gameWidth = window.innerWidth;
-    gameHeight = window.innerHeight;
-
-    ctx.canvas.width  = width;
-    ctx.canvas.height = height;
+    ctx.canvas.width  = canvasWidth;
+    ctx.canvas.height = canvasHeight;
 
     // local storage highscore
     if (localStorage.getItem("puppumsHighScorPLZDONTCHEATOMG")) {
@@ -81,6 +82,13 @@ function loadImages() {
 
 function resetGame() {
     puppums = new Puppums();
+
+    var newGameSizes = {
+        width: width,
+        height: height
+    }
+    // right now auto loads a map (1)
+    mapData = loadMap(1, walls, platforms, lava, newGameSizes);
 }
 
 function gameLoop() {
@@ -99,7 +107,7 @@ function gameLoop() {
 
 // The canvas drawing method
 function render() {
-    ctx.clearRect(0, 0, gameWidth, gameHeight);
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     drawMSGs(ctx);
     drawPuppums(puppums);
@@ -126,6 +134,8 @@ function update(delta) {
 }
 
 function checkCollisions() {
+
+
     // VV both in Collisions.js
     // checkCollisionObjectPlatform
     // checkCollisionObjectWall

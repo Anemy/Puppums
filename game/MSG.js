@@ -36,7 +36,7 @@ function drawMSGs(ctx) {
             ctx.globalAlpha = 0.6*(MSGs[i].life/100);
             ctx.fillStyle = "black";
             ctx.font="1.0em Oswald";
-            ctx.fillText(MSGs[i].text,MSGs[i].x - 37,gameHeight - MSGs[i].y);
+            ctx.fillText(MSGs[i].text,MSGs[i].x - 37,height - MSGs[i].y);
             //ctx.drawImage(harvestImages[MSGs[i].type], scale*MSGs[i].x - 37*scale, scale*MSGs[i].y - 5*scale, 74*scale, 10*scale);
             //ctx.drawImage(harvestImages[MSGs[i].type], MSGs[i].x - 37*scale,MSGs[i].y - 5*scale, 74*scale, 10*scale);
             ctx.globalAlpha = 1;

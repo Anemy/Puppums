@@ -6,7 +6,7 @@ const RIGHT = 1;
 
 //player constants (temporary values for now)
 const playerRunSpeed = 440;
-const playerRunSpeedBuild = 1400;// Build up run speed
+const playerRunSpeedBuild = 2200;// Build up run speed
 const playerAccSpeed = 100;
 const playerRunSlowSpeed = 150;
 const playerRunDecelSpeed = 1600;
