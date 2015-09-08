@@ -21,6 +21,9 @@ var LEFT = 0;
 //Your character!
 var puppums = new Puppums();
 
+var sideScrollX = 0;
+var sideScrollY = 0;
+
 // the attributes of each level
 var mapData;
 var platforms = [];
@@ -68,8 +71,8 @@ function init() {
     MSGs.push(new msg(true, "Use arrow keys to control! Space to Jump!", width/2 - 100, height - puppums.height,1, "black"));
 
     // setTimeout(function() {
-    //     MSGs[1] = new msg(true, "WATCH OUT!!!!", gameWidth - gameWidth/5, floorSize + puppums.width/2,1, "black");
-    //     MSGs[2] = new msg(true, "WATCH OUT!!!!", gameWidth/10, floorSize + puppums.width/2,1, "black");
+    //     MSGs[1] = new msg(true, "WATCH OUT!!!!", width - width/5, floorSize + puppums.width/2,1, "black");
+    //     MSGs[2] = new msg(true, "WATCH OUT!!!!", width/10, floorSize + puppums.width/2,1, "black");
     // }, 2000);
 
     //start the game loop
@@ -88,7 +91,9 @@ function resetGame() {
         height: height
     }
     // right now auto loads a map (1)
-    mapData = loadMap(1, walls, platforms, lava, newGameSizes);
+    mapData = loadMap(2, walls, platforms, lava, newGameSizes);
+    width = newGameSizes.width;
+    height = newGameSizes.height;
 }
 
 function gameLoop() {
@@ -108,16 +113,54 @@ function gameLoop() {
 // The canvas drawing method
 function render() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.save();
+
+    //translate for the side scrolling XXXXX
+    if(width != canvasWidth) {
+        //check if player is near either side
+        if(puppums.x <= canvasWidth/2) {
+            sideScrollX = 0;
+        }
+        else if(puppums.x >= width - canvasWidth/2) {
+            sideScrollX = width - canvasWidth;
+        }
+        else {
+            sideScrollX = puppums.x - canvasWidth/2;
+        }
+
+        ctx.translate(-sideScrollX,0);
+    }
+    //translate for the side scrolling YYYYY
+    if(height != canvasHeight) {
+        //check if player is near either side
+        if(puppums.y <= canvasHeight/2) {
+            sideScrollY = 0;
+        }
+        else if(puppums.y >= height - canvasHeight/2) {
+            sideScrollY = height - canvasHeight;
+        }
+        else {
+            sideScrollY = puppums.y - canvasHeight/2;
+        }
+        ctx.translate(0,-sideScrollY);
+    }
 
     drawMSGs(ctx);
     drawPuppums(puppums);
     drawParts(ctx);
+
+    drawAllLava();
+    drawPlatforms();
+    drawWalls();
+
+    ctx.restore();
+
     //console.log("DogX: " + puppums.xPos + "  -  " + puppums.yPos);
 
     // ctx.fillStyle = "rgb(0,0,0)";
-    // ctx.fillRect(0, (gameHeight-floorSize), gameWidth, 4);
-    // ctx.fillRect(0, (gameHeight-floorSize) + 8, gameWidth, 2);
-    // ctx.fillRect(0, (gameHeight-floorSize) + 14, gameWidth, 1);
+    // ctx.fillRect(0, (height-floorSize), width, 4);
+    // ctx.fillRect(0, (height-floorSize) + 8, width, 2);
+    // ctx.fillRect(0, (height-floorSize) + 14, width, 1);
 
     // ctx.font="30px Oswald";
     // ctx.fillText("LEVEL: " + currentLevel, 2, 30);
@@ -125,21 +168,55 @@ function render() {
 
 //call all game updates
 function update(delta) {
-    checkCollisions();
+    checkCollisions(delta);
+
 
     updatePuppumsPos(delta);
 
     updateMSGs(delta);
     updateParts(delta);
+    
+    updatePlatforms(delta);
 }
 
-function checkCollisions() {
-
-
+function checkCollisions(delta) {
     // VV both in Collisions.js
-    // checkCollisionObjectPlatform
-    // checkCollisionObjectWall
+    checkCollisionObjectWall(puppums, delta);
+    checkCollisionObjectPlatform(puppums, delta);
 }
+
+var updatePlatforms = function(delta) {
+    if(platforms != undefined) {
+        for(var i = 0; i < platforms.length; i++) {
+            updatePlatform(delta, platforms[i]);
+        }
+    }
+}
+
+drawPlatforms = function() {
+    if(platforms != undefined) {
+        for(var i = 0; i < platforms.length; i++) {
+            drawPlatform(ctx, platforms[i]);
+        }
+    }
+}
+
+drawWalls = function() {
+    if(walls != undefined) {
+        for(var i = 0; i < walls.length; i++) {
+            drawWall(ctx, walls[i]);
+        }
+    }
+}
+
+drawAllLava = function() {
+    if(lava != undefined) {
+        for(var i = 0; i < lava.length; i++) {
+           drawLava(ctx, lava[i], sideScrollX, sideScrollY);
+        }
+    }
+}
+
 
 //kill the dog and call the game reset
 function killPup() {
@@ -169,7 +246,7 @@ function killPup() {
             }
         }
 
-        puppums.xPos = -gameWidth;
+        puppums.xPos = -width;
 
         //start a new game
         setTimeout(function(){resetGame();},2000);

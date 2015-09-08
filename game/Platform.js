@@ -34,7 +34,7 @@ var Platform = function (xPos, yPos, width, height, moveHori, moveVert, isSolid,
         this.xMax = this.x + 200;
         this.xMin = this.x;
     }
-    else if (moveHori && xMovingPlat != null) {
+    else if (moveHori && xMovingPlat) {
         this.horz = true;
         this.xDir = xMovingPlat.velocity;
         if (this.xDir < 0) {
@@ -49,13 +49,13 @@ var Platform = function (xPos, yPos, width, height, moveHori, moveVert, isSolid,
     else
         this.horz = false;
 
-    if(moveVert && yMovingPlat === null){
+    if(moveVert && !yMovingPlat){
         this.vert = true;
         this.yDir = -300;
         this.yMax = this.y - 1999;
         this.yMin = this.y;
     }
-    else if (moveVert && yMovingPlat !== null) {
+    else if (moveVert && yMovingPlat) {
         this.vert = true;
         this.yDir = -yMovingPlat.velocity;
         if (this.yDir > 0) {

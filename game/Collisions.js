@@ -149,3 +149,48 @@ checkCollisionObjectWall = function(obj, delta) {
     }
     return false;
 }
+
+
+allCollisions = function(delta) {
+    // player-lava collision
+    for(var i = 0; i < lava.length; i++){
+        if(puppums.health > 0 && checkCollision(puppums,lava[i])){
+            puppums.health -= 340;
+            if (puppums.health <= 0) {
+              //gives the player the kill who hit last (if someone just hit them)
+              if (puppums.lastPlayerToHit != -1 && puppums.lastPlayerToHit != undefined) {
+                recordKillStats(players[puppums.lastPlayerToHit], puppums);
+
+                if(isClient == false) {
+                  // make the new collision data to send to clients
+                  var newCollisionData = {
+                    someoneDied: true,
+                    shooter: puppums.lastPlayerToHit,
+                    playerShot: k,
+                    type: 3 //type 3 for that lava!
+                  }
+
+                  collisionData.push(newCollisionData);
+                }
+                else {
+                  //console.log("Lava kill yo!");
+                  addKillFeed(players[puppums.lastPlayerToHit], puppums, true);
+                }
+              }
+              else {
+                puppums.deaths++;
+                puppums.killStreak = 0;
+              }
+
+              if(currentGameMode != Survival){
+                respawnPlayer(puppums, gameWidth, gameHeight);
+              }
+            }
+            else {
+                puppums.y = lava[i].y - puppums.height-1;
+                puppums.yDir = -puppums.yDir;
+                puppums.yDir /= 1.5;
+            }
+        }
+    }
+}

@@ -180,13 +180,14 @@ function updatePuppumsPos(delta) {
         }
     }
 
+    var overrideFloor = false;
     // bottom y collision
     if (puppums.y + (puppums.yDir * delta) > height - puppums.height && puppums.yDir > 0) {
         // stop player from falling
         puppums.yDir = 0;
         puppums.y = height - puppums.height;
         puppums.jump = false;
-        puppums.floor = true;
+        overrideFloor = true;
     }
 
     // JUMP!
@@ -194,9 +195,11 @@ function updatePuppumsPos(delta) {
         // console.log('JMUPJUMPJUMP');
         puppums.jump = true;
         puppums.yDir = -playerJumpSpeed;
-        puppums.floor = false;
     }
-
+    puppums.floor = false;
+    if(overrideFloor) {
+        puppums.floor = true;
+    }
 
     // console.log('Puppums pos: ' + puppums.x + "  " + puppums.y);
     // console.log('Puppums dir: ' + puppums.xDir + "  " + puppums.yDir);
