@@ -5,7 +5,7 @@ const LEFT = -1; // should not do 0 because js sometimes typecasts null to 0
 const RIGHT = 1;
 
 //player constants (temporary values for now)
-const playerRunSpeed = 440;
+const playerRunSpeed = 380;
 const playerRunSpeedBuild = 2200;// Build up run speed
 const playerAccSpeed = 100;
 const playerRunSlowSpeed = 150;
