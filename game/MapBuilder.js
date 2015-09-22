@@ -5,6 +5,40 @@ This class contains the map building methods
 
 */
 
+/* 
+***************
+HOW TO ADD A MAP::
+
+ADD your map name to the array below (similair index)
+ADD your map to the switch in loadmap
+** Be sure to give a width/height and an end point
+
+profit!
+
+*/
+
+var mapNames = [ 
+	'What is Jumping?', // 0 
+	'Unnamed', // 1 
+];
+
+
+/*gen methods:
+
+----generate rooms, structures, etc.
+genStaircase(platforms, xTop, yTop, facing(-1 or 1), # of steps)
+genSniperPost(walls, platforms, xLeft, yTop, facing(-1 or 1), size(best at 80 to 150))
+genRoom(walls, platforms, x1, y1, x2, y2, doorLeft(boolean), doorRight(boolean))
+
+----basic objects
+genPlatform(platforms, x, y, width, height, horizontal moving(boolean), vertical moving(boolean), solid(boolean))
+genWall(walls, x, y, width, height)
+
+----useful methods
+genMirror(platforms, walls, lava)
+
+*/
+
 genStaircase = function (platforms,x,y,horz,steps){
 	for(var i = 0; i < steps; i++){
 		platforms.push(new Platform(x+i*horz*10,y+i*10,20,10,false,false,true,true));
@@ -135,39 +169,8 @@ genMirror = function(platforms,walls,lava, gameWidth, gameHeight){
 	}
 }
 
-/*
-MapIDs:
-1 - ctf map 1
-2 - challenge course
-3 - free for all map 1
-4 - ctf map 2
-5 - lava bottomed single frame map duel
-6 - lava bottomed single frame map platforms
-7 - green 1v1 map
-8 - huge ctf map
-*/
-
-
-/*gen methods:
-
-----generate rooms, structures, etc.
-genStaircase(platforms, xTop, yTop, facing(-1 or 1), # of steps)
-genSniperPost(walls, platforms, xLeft, yTop, facing(-1 or 1), size(best at 80 to 150))
-genRoom(walls, platforms, x1, y1, x2, y2, doorLeft(boolean), doorRight(boolean))
-
-----basic objects
-genPlatform(platforms, x, y, width, height, horizontal moving(boolean), vertical moving(boolean), solid(boolean))
-genWall(walls, x, y, width, height)
-
-----useful methods
-genMirror(platforms, walls, lava)
-
-*/
-
-
-
 //loads a specific map based on the ID passed (should it also load in game modes?)
-loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gameHeight) {
+loadMap = function(mapID, walls, platforms, lava, gameSizes, cakeLocation) {//, gameWidth, gameHeight) {
 	/* Since we make so many calls to genPlatform and genWall, i decided to
 	abstract them a bit.
 		Example usage - to build a platform, all you need to call is:
@@ -175,15 +178,47 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 
 		All the optionals still work when you bind the functions in this way. */
 
-	// if (MAP_CREATION_MODE) {
-	// 	var jsonfile = require('jsonfile');
-	// 	var util = require('util');
-	// }
+
+	console.log('MapBuilder: Loading map: ' + mapID);
+
 	var _p = genPlatform.bind(null, platforms);
 	var _w = genWall.bind(null, walls, platforms);
 	var _s = genStaircase.bind(null, platforms);
-	switch(mapID) {
-		case 1: //the dank ctf map
+
+	switch(mapNames[mapID]) {
+		case 'What is Jumping?': // What is jumping?
+			gameSizes.width = 2000;
+			gameSizes.height = 4000;
+
+			// console.log('Loading 1');
+
+
+
+			genWall(walls,platforms,100,0,10,3900);
+
+			genDiamond(platforms,150,700 + 3100,10,false,false);
+			genDiamond(platforms,500,500 + 3100,10,false,false);
+			genDiamond(platforms,650,400 + 3100,15,true,true);
+			genPlatform(platforms,380,500 + 3100,20,10,false,false);
+			genStaircase(platforms,1450,500 + 2000,-1,50);
+			genPlatform(platforms,950,1050+ 2000,10,10);
+			genPlatform(platforms,1000,1130+ 2000,10,10);
+			genPlatform(platforms,1200,500+ 2000,200,10);
+			genPlatform(platforms,1000,500+ 2000,30,10);
+			genPlatform(platforms,800,400+ 2000,30,10);
+			genPlatform(platforms,700,300+ 2000,30,10);
+			genPlatform(platforms,700,200+2000,30,10);
+			genDiamond(platforms,400,100+ 2000,10,false,false);
+			genDiamond(platforms,120,100+ 2000,10,false,false);
+			genPlatform(platforms,110,2000,10,10,false,false);
+			genPlatform(platforms,110,1900,10,10,false,false);
+			genPlatform(platforms,110,1800,10,10,false,false);
+			genPlatform(platforms,110,1700,10,10,false,false);
+			break;
+		case 2:
+
+			break;
+		case 61: //the dank ctf map
 			gameSizes.width = 2300;
 			gameSizes.height = 600;
 
@@ -206,7 +241,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			genMirror(platforms,walls, [], gameSizes.width, gameSizes.height);
 			break;
 
-		case 2: //jump challenge
+		case 62: //jump challenge
 			gameSizes.width = 2000;
 			gameSizes.height = 4000;
 
@@ -232,7 +267,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			genPlatform(platforms,110,1700,10,10,false,false);
 		break;
 
-		case 3: //free for all 1
+		case 63: //free for all 1
 			gameSizes.width = 1050;
 			gameSizes.height = 1000;
 
@@ -269,7 +304,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			genPlatform(platforms,0,400,70,10);
 		break;
 
-		case 4: //lava map
+		case 64: //lava map
 			gameSizes.width = 1550;
 			gameSizes.height = 1100;
 			genPlatform(platforms,350,901,30,10,false,true,false,false);
@@ -292,7 +327,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 
 		break;
 
-		case 5: //duel map
+		case 65: //duel map
 			gameSizes.width = 800;
 			gameSizes.height = 600;
 			genPlatform(platforms,50,400,700,10,false,false,true);
@@ -306,7 +341,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			lava.push(new Lava(0,500,gameSizes.width,100));
 
 		break;
-		case 6: //1v1 ffa fire small map
+		case 66: //1v1 ffa fire small map
 			gameSizes.width = 800;
 			gameSizes.height = 600;
 
@@ -328,7 +363,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			lava.push(new Lava(100,560,600,50));
 
 		break;
-		case 7: //1v1 basic small map
+		case 67: //1v1 basic small map
 			gameSizes.width = 800;
 			gameSizes.height = 600;
 
@@ -354,7 +389,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			//top right
 			genPlatform(platforms,520,230,280,10);
 		break;
-		case 8:
+		case 68:
 			/* map has 3 basic levels:
 				1 - floor(2000-3000)
 					- 3 entrances, from mineshaft, spawning, or middle of the map
@@ -495,7 +530,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			return mapData;
 		break;
 
-		case 9: //ffa map
+		case 69: //ffa map
 			gameSizes.width = 1500;
 			gameSizes.height = 900;
 
@@ -549,7 +584,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			genPlatform(platforms,735,760,30,10);
 		break;
 
-		case 10: //simple randomly generated map
+		case 70: //simple randomly generated map
 			gameSizes.width = 800;
 			gameSizes.height = 600;
 
@@ -596,7 +631,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 
 		break;
 
-		case 11: //simple randomly generated mirror map
+		case 71: //simple randomly generated mirror map
 			gameSizes.width = 1600;
 			gameSizes.height = 600;
 			if (mode == CTF) {
@@ -608,7 +643,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 
 		break;
 
-		case 12: //ffa
+		case 72: //ffa
 			gameSizes.width = 1500;//3000
 			gameSizes.height = 1100;
 
@@ -674,7 +709,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 
 		break;
 
-		case 13:
+		case 73:
 			gameSizes.width = 3000;
 			gameSizes.height = 800;
 			var move = 1500;
@@ -742,7 +777,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			_p(1450,300,100,10);
 		break;
 
-		case 14:
+		case 74:
 			gameSizes.width = 3000;
 			gameSizes.height = 800;
 			var move = 1500;
@@ -811,7 +846,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			_p(1450,300,100,10);
 		break;
 
-		case 15:
+		case 75:
 			gameSizes.width = 4001;
 			gameSizes.height = 1300;
 
@@ -887,7 +922,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 		break;
 
 
-		case 16:
+		case 76:
 			gameSizes.width = 1000;
 			gameSizes.height = 1500;
 
@@ -923,7 +958,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 		break;
 
 
-		case 18:
+		case 78:
 			gameSizes.width = 1200;
 			gameSizes.height = 3000;
 			_p(40, 2880, 10, 10);
@@ -958,7 +993,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			_p(780, 1320, 10, 10);
 			_p(450, 1290, 10, 10);
 			break;
-		case 17: //Rhys' mirror nest
+		case 77: //Rhys' mirror nest
 			gameSizes.width = 1000;
 			gameSizes.height = 800;
 
@@ -978,7 +1013,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes) {//, gameWidth, gam
 			_p(300,400,200,10,true,false,false);
 		break;
 
-		case 19: // "Beach Assault" CTF map
+		case 79: // "Beach Assault" CTF map
 			gameSizes.width = 3500; // it's really fucking long
 			gameSizes.height = 800;
 

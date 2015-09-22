@@ -41,14 +41,10 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+/* END reset css codes */
 
-
-/* MY THINGS */
 
 #game_canvas{
-    /*position:fixed;
-    top: 0;
-    left: 0;*/
     z-index:-1;
 
     border: 1px solid black;
@@ -60,51 +56,83 @@ body {
     text-align: center;
 }
 
-#mePic {
-    width: 16%;
-    border: 1px;
-    border-style: solid;
-    border-color: #000020;
-}
-
-#name {
     /*font-family: 'Oswald', sans-serif;*/
 
     /*font-family: 'Oswald', sans-serif;
-    font-weight: 700;*/
-    /*font-family: 'Sigmar One', cursive;*/
+    font-weight: 700;
+    font-family: 'Sigmar One', cursive;*/
+
+/*#name {
     font-family: 'Roboto', sans-serif;
     font-weight: 200;
 
     font-size: 1.5em;
     color: #1abc9c;
     margin-top: 1em;
-    margin-bottom: 0.6em;
+    margin-bottom: 0.3em;
+}*/
+
+.menu {
+    z-index: 1;
+    position: relative;
+
+    top: -600px;
 }
 
 
-#belowAboutLine {
-    width: 24%;
-    height: 0.01px;
-    border-color: #1abc9c;
+.menu p {
+    color: #110021;
+
+    font-family: 'Roboto', sans-serif;
+    font-weight: 200;
+
+    font-size: 16px;
+
+    margin-top: 40px;
+}
+.menu h1 {
+    color: #1abc9c;
+
+    font-family: 'Roboto', sans-serif;
+    font-weight: 200;
+
+    font-size: 20px;
+
+    margin-top: 10px;
+
+    margin-bottom: 10px;
 }
 
-#birthdayTemp {
+.menu a {
+    margin-top: 10px;
+
     font-family: 'Questrial', sans-serif;
 
-    font-size: 1.5em;
-    color: black;
-    margin-top: 1%;
+    color: #110021;
+    text-decoration: none;
+
+    border: 1px solid #E0E0E0;
+    border-radius: 3px;
+
+    padding: 6px;
+
+    -webkit-transition: all .25s ease;
+    -moz-transition: all .25s ease;
+    -ms-transition: all .25s ease;
+    -o-transition: all .25s ease;
+    transition: all .25s ease;
+}
+.menu a:hover {
+    cursor: pointer;
+
+    border-color: #1abc9c;
+    /*border-color: #110021;*/
 }
 
-
-/*#options {
-    font-family: Calibri, sans-serif;
-    font-size: 1.0em;
-    color: #000020;
-    margin-top: 1%;
-    font-weight: 400;
-}*/
+.level {
+    display: inline-block;
+    margin: 10px;
+}
 
 span:hover {
 	cursor: pointer;

@@ -10,6 +10,9 @@
         <link href='http://fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Sigmar+One' rel='stylesheet' type='text/css'>
 
+        <script type="text/javascript" src="libs/jquery.js"></script>
+        <script type="text/javascript" src="libs/jqueryui.js"></script>
+
         <script type="text/javascript" src="game/Collisions.js"></script> 
         <script type="text/javascript" src="game/Lava.js"></script>
         <script type="text/javascript" src="game/Platform.js"></script> 
@@ -22,7 +25,7 @@
         <script type="text/javascript" src="game/Menu.js"></script>
     </head>
     <body onLoad="init()">
-        <h1 id="name">PUPPUMS</h1>
+        <!-- <h1 id="name">PUPPUMS</h1> -->
         <!-- <hr id="belowAboutLine"/>
         <p id="birthdayTemp">Happy Birthday Paul!!1! (temp till art)</p> -->
 
@@ -31,6 +34,11 @@
             <a target="_blank" href="http://www.github.com/Anemy"><span id="github">Github</span></a> | 
             <a target="_blank" href="http://stick.gg"><span id="stick">Stick <span style="color: #3498db;">G</span><span style="color: #e74c3c;">G</span></span></a>
         </div> -->
-        <canvas id="game_canvas">Error, canvas is not supported! You can't play my game</canvas>
+        <div class="menuGameContainer">
+            <canvas id="game_canvas">Error, canvas is not supported! You can't play my game</canvas>
+            <div class="menu">
+                <p>Loading...</p>
+            </div>
+        </div>
     </body>
 </html>

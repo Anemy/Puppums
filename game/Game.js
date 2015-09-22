@@ -11,6 +11,8 @@ var height = 600;
 var canvasWidth = 800;
 var canvasHeight = 600;
 
+var currentLevel = 0;
+
 // The fps is actually 1000/ VVVV
 var fps = 15;
 
@@ -56,15 +58,13 @@ function init() {
 
     // console.log("Canvas created, dimensions: " + width + "x" + height + " running at fps: " + (1000/fps));
 
-    lastTime = Date.now();
-
     loadImages();
+}
 
-    // particles
-    parts = [];
-    for(i = 0; i < numberOfParts; i++) {
-        parts[i] = new part(false, 0,0,0,0, 0);
-    }
+var startGame = function (mapID) {
+    currentLevel = mapID;
+
+    lastTime = Date.now();
 
     resetGame();
 
@@ -86,12 +86,18 @@ function loadImages() {
 function resetGame() {
     puppums = new Puppums();
 
+    // particles
+    parts = [];
+    for(i = 0; i < numberOfParts; i++) {
+        parts[i] = new part(false, 0,0,0,0, 0);
+    }
+
     var newGameSizes = {
         width: width,
         height: height
     }
     // right now auto loads a map (1)
-    mapData = loadMap(2, walls, platforms, lava, newGameSizes);
+    mapData = loadMap(currentLevel, walls, platforms, lava, newGameSizes);
     width = newGameSizes.width;
     height = newGameSizes.height;
 }
