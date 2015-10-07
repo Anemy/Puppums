@@ -4,6 +4,7 @@
 
 var canvas;
 var ctx;
+var gameLoopInterval;
 
 // Game is based on these. ()
 var width = 800;
@@ -11,7 +12,9 @@ var height = 600;
 var canvasWidth = 800;
 var canvasHeight = 600;
 
-var currentLevel = 0;
+var level = 0;
+var gameOver = false;
+var endGameLength = 4; // how long after win the game keeps going
 
 // The fps is actually 1000/ VVVV
 var fps = 15;
@@ -22,6 +25,9 @@ var LEFT = 0;
 
 //Your character!
 var puppums = new Puppums();
+
+// yum
+var cake;
 
 var sideScrollX = 0;
 var sideScrollY = 0;
@@ -34,7 +40,7 @@ var lava = [];
 // collisions are performed in Collisions.js
 
 //half the time returns the val as negative
-function getNegative (toNegate) {
+var getNegative  = function(toNegate) {
     if(Math.random() * 100 > 50)
         return - toNegate;
     else
@@ -42,7 +48,7 @@ function getNegative (toNegate) {
 }
 
 
-function init() {
+var init = function() {
     canvas = document.getElementById('game_canvas');
     ctx = canvas.getContext('2d');
 
@@ -62,7 +68,7 @@ function init() {
 }
 
 var startGame = function (mapID) {
-    currentLevel = mapID;
+    level = mapID;
 
     lastTime = Date.now();
 
@@ -76,38 +82,61 @@ var startGame = function (mapID) {
     // }, 2000);
 
     //start the game loop
-    setInterval(function () { gameLoop() }, fps);
+    gameLoopInterval = setInterval(function () { gameLoop() }, fps);
 }
 
-function loadImages() {
+var loadImages = function() {
 
 }
 
-function resetGame() {
+var resetGame = function() {
     puppums = new Puppums();
 
-    // particles
-    parts = [];
-    for(i = 0; i < numberOfParts; i++) {
-        parts[i] = new part(false, 0,0,0,0, 0);
-    }
+    parts = []; // particles
+    walls = [];
+    platforms = [];
+    lava = undefined;
+
 
     var newGameSizes = {
         width: width,
         height: height
     }
+    var cakeData = {
+        x: -1,
+        y: -1
+    }
     // right now auto loads a map (1)
-    mapData = loadMap(currentLevel, walls, platforms, lava, newGameSizes);
+    mapData = loadMap(level, walls, platforms, lava, newGameSizes, cakeData);
     width = newGameSizes.width;
     height = newGameSizes.height;
+
+    if(cakeData.x == -1 && cakeData.y == -1) {
+        console.log('ERROR::: MAKE SURE YOU SET CAKE X AND Y IN MAPBUILDER.');
+    }
+
+    cake = new Cake(cakeData.x, cakeData.y);
+    gameOver = 0;
 }
 
-function gameLoop() {
+var gameLoop = function() {
     var currentTime = Date.now();
 
     var deltaTime = (currentTime - lastTime)/1000;
 
     if(deltaTime < 0.2) { //dont allow when they come out and into tab for one iteration (or when hella slow)
+        if(gameOver > 0) {
+            gameOver += deltaTime;
+
+            // new level start
+            if(gameOver > endGameLength) {
+                level++;
+                resetGame();
+            }
+
+            // end game slowmo
+            deltaTime = deltaTime/10;
+        }
         update(deltaTime);
     }
 
@@ -116,8 +145,16 @@ function gameLoop() {
     lastTime = currentTime;
 }
 
+var endGameGoToMenu = function () {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    window.clearInterval(gameLoopInterval);
+    gameLoopInterval = 0;
+
+    loadMenu(LEVEL_CHOICE);
+}
+
 // The canvas drawing method
-function render() {
+var render = function() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.save();
 
@@ -152,8 +189,11 @@ function render() {
     }
 
     drawMSGs(ctx);
-    drawPuppums(puppums);
     drawParts(ctx);
+    if(gameOver == 0) {
+        drawCake(ctx, cake);
+    }
+    drawPuppums(puppums);
 
     drawAllLava();
     drawPlatforms();
@@ -169,26 +209,54 @@ function render() {
     // ctx.fillRect(0, (height-floorSize) + 14, width, 1);
 
     // ctx.font="30px Oswald";
-    // ctx.fillText("LEVEL: " + currentLevel, 2, 30);
+    // ctx.fillText("LEVEL: " + level, 2, 30);
 }
 
 //call all game updates
-function update(delta) {
+var update = function(delta) {
     checkCollisions(delta);
-
 
     updatePuppumsPos(delta);
 
     updateMSGs(delta);
     updateParts(delta);
+    updateCake(delta, cake);
     
     updatePlatforms(delta);
 }
 
-function checkCollisions(delta) {
+var checkCollisions = function(delta) {
     // VV both in Collisions.js
     checkCollisionObjectWall(puppums, delta);
     checkCollisionObjectPlatform(puppums, delta);
+
+    if(checkCollisionObjObj(puppums, cake, delta) && gameOver == 0) {
+        // Cake is eaten
+        console.log('Cake');
+
+        // end the game
+        gameOver = 1;
+
+        // spawn celebratory particles
+        var numberOfPartsToAdd = 60;
+        for(i = 0; i < numberOfPartsToAdd; i++) {
+            parts.push(new part(
+                cake.x + Math.random()*cake.width, cake.y + Math.random()*cake.height, // x, y
+                getNegative(Math.random() * maxPartSpeed), // xdir
+                -(Math.random() * maxPartSpeed + minPartSpeed), // ydir
+                // "rgb(" + Math.floor(Math.random()*250) + ", " + Math.floor(Math.random()*250) + ", " + Math.floor(Math.random()*250) + ")"); // color
+                'rgb(11, 211, 24)')); // 209,238,252
+
+            // parts.push(new part(
+            //     cake.x + Math.random()*cake.width, cake.y + Math.random()*cake.height, // x, y
+            //     getNegative(Math.random() * maxPartSpeed), // xdir
+            //     -(Math.random() * maxPartSpeed + minPartSpeed), // ydir
+            //     // "rgb(" + Math.floor(Math.random()*250) + ", " + Math.floor(Math.random()*250) + ", " + Math.floor(Math.random()*250) + ")"); // color
+            //     'rgb(219,221,222)'));
+            
+            //console.log("New particle added xv: "+parts[k].xdir + " yv: "+parts[k].ydir);
+        }
+    }
 }
 
 var updatePlatforms = function(delta) {
@@ -199,7 +267,7 @@ var updatePlatforms = function(delta) {
     }
 }
 
-drawPlatforms = function() {
+var drawPlatforms = function() {
     if(platforms != undefined) {
         for(var i = 0; i < platforms.length; i++) {
             drawPlatform(ctx, platforms[i]);
@@ -207,7 +275,7 @@ drawPlatforms = function() {
     }
 }
 
-drawWalls = function() {
+var drawWalls = function() {
     if(walls != undefined) {
         for(var i = 0; i < walls.length; i++) {
             drawWall(ctx, walls[i]);
@@ -215,7 +283,7 @@ drawWalls = function() {
     }
 }
 
-drawAllLava = function() {
+var drawAllLava = function() {
     if(lava != undefined) {
         for(var i = 0; i < lava.length; i++) {
            drawLava(ctx, lava[i], sideScrollX, sideScrollY);
@@ -225,7 +293,7 @@ drawAllLava = function() {
 
 
 //kill the dog and call the game reset
-function killPup() {
+var killPup = function() {
     keepUpdating = false;
 
     if(savedHighScore < highScore) {
@@ -233,7 +301,7 @@ function killPup() {
     }
 
     setTimeout( function() {
-        //particles for doggy death
+        // particles for doggy death
         var numberOfPartsToAdd = 50;
         for(k = 0; k < numberOfParts; k++) {
             if(parts[k].alive == false) {
@@ -263,6 +331,8 @@ window.addEventListener('keydown', this.keyPressed , false);
 
 function keyPressed(e) {
     //document.getElementById("p1").innerHTML = "New text!";
+    // console.log("Running");
+
     var key = e.keyCode;
     e.preventDefault();
 
@@ -298,22 +368,8 @@ function keyReleased(e) {
         puppums.space = false;
         //space
     }
-}
 
-// touch screen
-// they can't move, but they can jump!!!
-window.addEventListener('touchstart', this.touchStart, false);
-
-function touchStart() {
-    if (puppums.jump == false) {
-        puppums.space = true;
-        puppums.jump = true;
-        puppums.yDir = jumpSpeed;
+    if(upKey == 27) { // Esc
+        endGameGoToMenu();
     }
-}
-
-window.addEventListener('touchend', this.touchEnd, false);
-
-function touchEnd() {
-    puppums.space = false;
 }

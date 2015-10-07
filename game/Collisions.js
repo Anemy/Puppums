@@ -150,6 +150,50 @@ checkCollisionObjectWall = function(obj, delta) {
     return false;
 }
 
+// collision between two moving objects (bullet, player) (cake, pupps)
+// each object needs an x, a y, width and height
+var checkCollisionObjObj = function(obj, obj2, delta){
+    if(Math.abs(obj.xDir * delta) >= obj2.width){
+        var xTestDir = 0;
+        var xTestDirL = 0;
+        var xTestDirOG = obj2.width; //obj2.width / 2;
+        if(obj.xDir > 0) {
+            do{
+                if (obj.y + obj.height >= obj2.y &&
+                    obj.y  <= obj2.y + obj2.height &&
+                    obj.x + obj.width + xTestDir>= obj2.x &&
+                    obj.x + xTestDir <= obj2.x + obj2.width){
+
+                    return true;
+                }
+                xTestDir += xTestDirOG/4;
+            }
+            while(xTestDir <= obj.xDir * delta + obj2.width);
+        }
+        else if(obj.xDir < 0){
+            do{
+                if (obj.y + obj.height >= obj2.y &&
+                    obj.y  <= obj2.y + obj2.height &&
+                    obj.x + obj.width + xTestDirL>= obj2.x &&
+                    obj.x + xTestDirL<= obj2.x + obj2.width) {
+
+                    return true;
+                }
+                xTestDirL -= xTestDirOG/4;
+            }
+            while(xTestDirL >= obj.xDir * delta - obj2.width);
+        }
+    }
+    else{
+        return (obj.y + obj.yDir * delta + obj.height >= obj2.y + obj2.yDir * delta &&
+                obj.y + obj.yDir * delta <= obj2.y + obj2.yDir * delta + obj2.height &&
+                obj.x + obj.xDir * delta + obj.width >= obj2.x + obj2.xDir * delta &&
+                obj.x + obj.xDir * delta <= obj2.x + obj2.xDir * delta + obj2.width);
+    }
+
+    return false;
+}
+
 
 allCollisions = function(delta) {
     // player-lava collision

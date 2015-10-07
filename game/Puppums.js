@@ -46,17 +46,17 @@ footStepSoundCounter = 0;
 
 // Loading images
 dogRm[0] = new Image();
-dogRm[0].src = (("game/pics/DogRm0.png"));
+dogRm[0].src = "game/pics/DogRm0.png";
 dogRm[1] = new Image();
-dogRm[1].src = (("game/pics/DogRm1.png"));
+dogRm[1].src = "game/pics/DogRm1.png";
 dogLm[0] = new Image();
-dogLm[0].src = (("game/pics/DogLm0.png"));
+dogLm[0].src = "game/pics/DogLm0.png";
 dogLm[1] = new Image();
-dogLm[1].src = (("game/pics/DogLm1.png"));
+dogLm[1].src = "game/pics/DogLm1.png";
 dogR = new Image();
-dogR.src = (("game/pics/DogR.png"));
+dogR.src = "game/pics/DogR.png";
 dogL = new Image();
-dogL.src = (("game/pics/DogL.png"));
+dogL.src = "game/pics/DogL.png";
 
 //popXPos , popYPos , popXDir , popYDir , popFacing(0 or 1) , runCount
 var Puppums = function () {

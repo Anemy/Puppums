@@ -32,7 +32,7 @@ var changeMenu = function(menuID) {
 			console.log('Menu: Loading LEVEL choice');
 
 			menu += '<h1>Choose your level:</h1>';
-			menu += '<h1 class="hoverText">&nbsp;</h1>';
+			menu += '<h2 class="hoverText">&nbsp;</h2>';
 			menu += '<div class="levels">'
 			menu += 	'<a class="level">1</a>';
 			menu += 	'<a class="level">2</a>';
