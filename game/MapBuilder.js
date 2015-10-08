@@ -149,7 +149,7 @@ genRoom = function(walls, platforms, x1, y1, x2, y2, doorLeft, doorRight){
 	//genPlatform(platforms,x1,y2,x2-x1+10,10,false,false,true);
 }
 
-// letters (slashes mean completed) H \a/ p \y/ B i r t h d
+// letters (slashes mean completed) H \a/ p \y/ B i r t h \d/
 
 genLetter_y = function(platforms, x, y, size) {
     // rightward sloping (\)
@@ -161,6 +161,11 @@ genLetter_y = function(platforms, x, y, size) {
 genLetter_a = function(walls, platforms, x1, y1, x2, y2) {
     genSquare(walls, platforms, x1, y1, x2, y2);
     genPlatform(platforms, x2, y2, 20, 10);
+}
+
+genLetter_d = function(walls, platforms, x1, y1, size) {
+    genSquare(walls, platforms, x1, y1+(size*8), x1+(size*7), y1+(size*15));
+    genWall(walls, platforms, x1+(size*7), y1, 10, (size*8));
 }
 
 genMirror = function(platforms,walls,lava, gameWidth, gameHeight){
@@ -261,7 +266,8 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes, cakeLocation) {//, 
             cakeLocation.x = 300;
             cakeLocation.y = 300;
             // genLetter_y(platforms, 250, 250, 25);
-            genLetter_a(walls, platforms, 250, 250, 350, 350);
+            // genLetter_a(walls, platforms, 250, 250, 350, 350);
+            genLetter_d(walls, platforms, 250, 250, 15);
             break;
 	}
 
