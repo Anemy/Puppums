@@ -21,6 +21,7 @@ var mapNames = [
 	'What is Jumping?', // 0 
 	'Unnamed', // 1 
     '!littleBoxes?', // 2
+    'letters', // 3
 ];
 
 
@@ -115,6 +116,13 @@ genDiamond = function(platforms,x,y,size,horz,vert){
 	}
 }
 
+genSquare = function(walls, platforms, x1, y1, x2, y2) {
+    genWall(walls, platforms, x1, y1, 10, y2-y1);
+    genWall(walls, platforms, x2, y1, 10, y2-y1);
+    genPlatform(platforms, x1, y1, x2-x1, 10);
+    genPlatform(platforms, x1, y2-10, x2-x1, 10);
+}
+
 genLava = function(lava, x, y, w, h) {
 	lava.push(new Lava(x, y, w, h));
 }
@@ -141,6 +149,19 @@ genRoom = function(walls, platforms, x1, y1, x2, y2, doorLeft, doorRight){
 	//genPlatform(platforms,x1,y2,x2-x1+10,10,false,false,true);
 }
 
+// letters (slashes mean completed) H \a/ p \y/ B i r t h d
+
+genLetter_y = function(platforms, x, y, size) {
+    // rightward sloping (\)
+    genStaircase(platforms, x, y, 1, size/2);
+    // leftward sloping (/)
+    genStaircase(platforms, x+10*size, y, -1, size);
+}
+
+genLetter_a = function(walls, platforms, x1, y1, x2, y2) {
+    genSquare(walls, platforms, x1, y1, x2, y2);
+    genPlatform(platforms, x2, y2, 20, 10);
+}
 
 genMirror = function(platforms,walls,lava, gameWidth, gameHeight){
 	var newPlatforms = [];
@@ -232,10 +253,15 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes, cakeLocation) {//, 
 
 			cakeLocation.x = Math.random()*500 + 3000;
 			cakeLocation.y = Math.random()*300 + 300;
-            console.log(cakeLocation.x + " " + cakeLocation.y);
             for (var i = 0; i < 40; i++) {
 			    genDiamond(platforms, i*100, Math.random()*500+200, 10, true, false);
             }
+            break;
+        case 'letters':
+            cakeLocation.x = 300;
+            cakeLocation.y = 300;
+            // genLetter_y(platforms, 250, 250, 25);
+            genLetter_a(walls, platforms, 250, 250, 350, 350);
             break;
 	}
 
