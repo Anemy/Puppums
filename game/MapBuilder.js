@@ -20,6 +20,7 @@ profit!
 var mapNames = [ 
 	'What is Jumping?', // 0 
 	'Unnamed', // 1 
+    '!littleBoxes?', // 2
 ];
 
 
@@ -225,6 +226,17 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes, cakeLocation) {//, 
 			cakeLocation.y = 400;
 
 			break;
+        case '!littleBoxes?':
+			gameSizes.width = 4000;
+			gameSizes.height = 700;
+
+			cakeLocation.x = Math.random()*500 + 3000;
+			cakeLocation.y = Math.random()*300 + 300;
+            console.log(cakeLocation.x + " " + cakeLocation.y);
+            for (var i = 0; i < 40; i++) {
+			    genDiamond(platforms, i*100, Math.random()*500+200, 10, true, false);
+            }
+            break;
 	}
 
 	// RETURN something else for mapdata in the switch if not null

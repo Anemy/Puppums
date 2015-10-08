@@ -36,6 +36,8 @@ var changeMenu = function(menuID) {
 			menu += '<div class="levels">'
 			menu += 	'<a class="level">1</a>';
 			menu += 	'<a class="level">2</a>';
+			menu += 	'<a class="level">3</a>';
+			menu += 	'<a class="level">4</a>';
 			menu += '</div>'
 			break;
 		case IN_GAME:
