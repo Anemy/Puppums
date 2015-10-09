@@ -168,6 +168,11 @@ genLetter_d = function(walls, platforms, x1, y1, size) {
     genWall(walls, platforms, x1+(size*7), y1, 10, (size*8));
 }
 
+genLetter_t = function(walls, platforms, x1, y1, size) {
+    genWall(walls, platforms, x1+(size*5), y1, 10, size*10);
+    genPlatform(platforms, x1+size, y1+(size*4), size*8, 10);
+}
+
 genMirror = function(platforms,walls,lava, gameWidth, gameHeight){
 	var newPlatforms = [];
 	var newWalls = [];
@@ -267,7 +272,8 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes, cakeLocation) {//, 
             cakeLocation.y = 300;
             // genLetter_y(platforms, 250, 250, 25);
             // genLetter_a(walls, platforms, 250, 250, 350, 350);
-            genLetter_d(walls, platforms, 250, 250, 15);
+            // genLetter_d(walls, platforms, 250, 250, 15);
+            genLetter_t(walls, platforms, 250, 250, 20);
             break;
 	}
 
