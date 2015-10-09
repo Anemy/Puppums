@@ -206,6 +206,22 @@ genLetter_cap_h = function(walls, platforms, x1, y1, size) {
     genWall(walls, platforms, x1+(size*5), y1, 10, size*10);
 }
 
+genLetter_u = function(walls, platforms, x1, y1, size) {
+    genWall(walls, platforms, x1, y1, 10, size*7);
+    genPlatform(platforms, x1, y1+(size*7), size*6+10, 10);
+    genWall(walls, platforms, x1+(size*6), y1, 10, size*7);
+}
+
+genLetter_l = function(walls, platforms, x1, y1, size) {
+    genWall(walls, platforms, x1, y1, 10, size*10);
+}
+
+genLetter_n = function(walls, platforms, x1, y1, size) {
+    genWall(walls, platforms, x1, y1, 10, size*7);
+    genPlatform(platforms, x1, y1+size, size*6+10, 10);
+    genWall(walls, platforms, x1+(size*6), y1+size, 10, size*6);
+}
+
 genMirror = function(platforms,walls,lava, gameWidth, gameHeight){
 	var newPlatforms = [];
 	var newWalls = [];
@@ -304,7 +320,7 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes, cakeLocation) {//, 
             cakeLocation.x = 300;
             cakeLocation.y = 300;
             // genLetter_y(walls, platforms, 250, 250, 25);
-            genLetter_a(walls, platforms, 250, 250, 15);
+            // genLetter_a(walls, platforms, 250, 250, 15);
             // genLetter_d(walls, platforms, 250, 250, 15);
             // genLetter_t(walls, platforms, 250, 250, 20);
             // genLetter_r(walls, platforms, 250, 250, 15);
@@ -313,6 +329,9 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes, cakeLocation) {//, 
             // genLetter_i(walls, platforms, 250, 250, 20);
             // genLetter_cap_b(walls, platforms, 250, 250, 20);
             // genLetter_cap_h(walls, platforms, 250, 250, 15);
+            // genLetter_u(walls, platforms, 250, 250, 15);
+            genLetter_l(walls, platforms, 250, 250, 15);
+            genLetter_n(walls, platforms, 350, 250, 15);
             break;
         case "birthday":
 			gameSizes.width = 4000;
