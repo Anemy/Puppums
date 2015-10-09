@@ -22,6 +22,7 @@ var mapNames = [
 	'Unnamed', // 1 
     '!littleBoxes?', // 2
     'letters', // 3
+    'birthday',
 ];
 
 
@@ -312,6 +313,26 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes, cakeLocation) {//, 
             // genLetter_i(walls, platforms, 250, 250, 20);
             // genLetter_cap_b(walls, platforms, 250, 250, 20);
             // genLetter_cap_h(walls, platforms, 250, 250, 15);
+            break;
+        case "birthday":
+			gameSizes.width = 4000;
+			gameSizes.height = 650;
+            cakeLocation.x = 3800;
+            cakeLocation.y = 300;
+
+            genLetter_cap_h(walls, platforms, 20, 380, 20);
+            genLetter_a(walls, platforms, 180, 380, 13);
+            genLetter_p(walls, platforms, 330, 380, 13);
+            genLetter_p(walls, platforms, 480, 380, 13);
+            genLetter_y(walls, platforms, 630, 380, 13);
+            genLetter_cap_b(walls, platforms, 820, 380, 20);
+            genLetter_i(walls, platforms, 990, 380, 13);
+            genLetter_r(walls, platforms, 1110, 380, 13);
+            genLetter_t(walls, platforms, 1230, 380, 13);
+            genLetter_h(walls, platforms, 1380, 380, 13);
+            genLetter_d(walls, platforms, 1530, 380, 10);
+            genLetter_a(walls, platforms, 1680, 380, 13);
+            genLetter_y(walls, platforms, 1830, 380, 13);
             break;
 	}
 
