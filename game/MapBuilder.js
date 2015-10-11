@@ -18,11 +18,11 @@ profit!
 */
 
 var mapNames = [ 
-	'What is Jumping?', // 0 
-	'Unnamed', // 1 
-    '!littleBoxes?', // 2
-    'letters', // 3
     'Paul', // 4
+	'What is Jumping?', // 0 
+	// 'Unnamed', // 1 
+    '!littleBoxes?', // 2
+    // 'letters', // 3
 ];
 
 
