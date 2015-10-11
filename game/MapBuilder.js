@@ -18,11 +18,12 @@ profit!
 */
 
 var mapNames = [ 
-    'Paul', // 4
-	'What is Jumping?', // 0 
-	// 'Unnamed', // 1 
-    '!littleBoxes?', // 2
+    'What is Jumping?', // 0
+    '!littleBoxes?', // 1
+    'difficult', // 2
+    'Paul', // 3
     // 'letters', // 3
+    // 'Unnamed', // 1
 ];
 
 
@@ -332,6 +333,24 @@ loadMap = function(mapID, walls, platforms, lava, gameSizes, cakeLocation) {//, 
 			    genDiamond(platforms, i*100, Math.random()*500+200, 10, true, false);
             }
             break;
+        case 'difficult':
+			gameSizes.width = 3400;
+			gameSizes.height = 800;
+            cakeLocation.x = 3254;
+            cakeLocation.y = 300;
+
+            for (var i=0; i<10; i++) {
+                genWall(walls, platforms, 100+(i*150), 700-(i*50), 10, 100);
+                genPlatform(platforms, 95+(i*150), 700-(i*50), 20, 10);
+            }
+
+            genWall(walls, platforms, 1700, 250, 10, 600);
+
+            for (var i=0; i<10; i++) {
+                genWall(walls, platforms, 1800+(i*150), 700-(i*50), 10, 100);
+            }
+            break;
+
         case 'letters':
             cakeLocation.x = 300;
             cakeLocation.y = 300;
